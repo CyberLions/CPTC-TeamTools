@@ -1,0 +1,123 @@
+%----------------------------------------------------------------------------------------
+%	Things that need to be configured for the ccso report
+%----------------------------------------------------------------------------------------
+
+% TODOs
+% add scope
+% finish findings hook
+% finish findings table
+% Include a section on compliance and info on it in specific findings
+% OSINT Sections
+% Network Diagram
+% Reassessment section
+% impact statements
+
+% Names and variables for use in findings/report
+\newcommand{\reportDate}{August 10, 2024} % Report date (not dynamic since we will write until the next day)
+\newcommand{\teamName}{Team [TEAM IDENTIFIER]} % Team name
+\newcommand{\clientFullName}{The Cozy Croissant} % Client full name
+\newcommand{\clientShortName}{TCC} % Client abbreviation
+
+% Path to client logo
+\newcommand{\clientLogo}{assets/placeholder.jpg}
+
+%----------------------------------------------------------------------------------------
+%	Custom stuff for findings
+%----------------------------------------------------------------------------------------
+
+% Counter to track # of findings/ID
+\newcounter{findingsCounter}
+
+% need to find a way to store an array of the findings to automate the table
+
+% Colors setup
+\newcommand{\critColor}{a569bd}
+\newcommand{\highColor}{e74c3c}
+\newcommand{\medColor}{f1c40f}
+\newcommand{\lowColor}{27ae60}
+\newcommand{\infoColor}{C0C0C0}
+\newcommand{\companyColor}{341c74}
+\newcommand{\companysubColor}{f7c317}
+
+% Macro to create a finding - need to automate the shading of the table with another macro prob
+\newcommand{\finding}[4]{
+    \stepcounter{findingsCounter}
+    \subsection*{\clientShortName\arabic{findingsCounter} -- #1}
+
+    \begin{table}[htp]
+    \centering
+    \begin{tabular}{|
+    >{\centering\arraybackslash\columncolor[HTML]{C0C0C0}}m{2.09in} |
+    >{\centering\arraybackslash\columncolor[HTML]{C0C0C0}}m{2.09in} |
+    >{\centering\arraybackslash\columncolor[HTML]{C0C0C0}}m{2.09in} |}
+    \hline
+    \textbf{Risk}                & \textbf{Sophistication}        & \textbf{Remediation}        \\ \hline
+    \cellcolor[HTML]{\critColor}#2 & \cellcolor[HTML]{\medColor}#3 & \cellcolor[HTML]{\lowColor}#4  \\ \hline
+    \end{tabular}
+\end{table}
+}
+
+%----------------------------------------------------------------------------------------
+%	Brings in the report class - you can ignore this
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	a4paper, % Paper size, use either a4paper or letter paper
+	12pt, % Default font size, the template is designed to look good at 12pt so it's best not to change this
+	%unnumberedsections, % Uncomment for no section numbering
+]{CSSullivanBusinessReport}
+
+%----------------------------------------------------------------------------------------
+%	title page configuration - should be handled by the ccso variables
+%----------------------------------------------------------------------------------------
+
+\reporttitle{\the\year{} Network Pentest Report} % The report title to appear on the title page and page headers, do not create manual new lines here as this will carry over to page headers
+
+\reportsubtitle{Prepared for \clientFullName} % Report subtitle, include new lines if needed
+
+\reportauthors{\teamName} % Report authors/group/department, include new lines if needed
+
+\reportdate{Report Issued: \reportDate} % Report date, include new lines for additional information if needed
+
+\rightheadercontent{\includegraphics[height=1.5cm]{\clientLogo}} % Header logo
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	Template pages
+%----------------------------------------------------------------------------------------
+
+\input{template/title-page.tex}
+\input{template/disclaimer-page.tex}
+\input{template/table-of-contents.tex}
+\input{report-sections/executive-summary} % EDIT ME
+\input{report-sections/engagement-information} % EDIT ME
+\input{template/classification-definitions.tex}
+
+%----------------------------------------------------------------------------------------
+%	Findings - replace the examples with ones that work for your report
+%----------------------------------------------------------------------------------------
+
+\section{Assessment Findings}
+
+\input{findings/test-finding}
+
+%----------------------------------------------------------------------------------------
+%	Imports the appendices, these should be stock standard but you may want to import
+%   some different ones depending on the engagement
+%----------------------------------------------------------------------------------------
+
+\newpage
+
+\section*{Appendices}
+
+\begin{appendices}
+
+\input{report-sections/appendices/tools-used.tex} % EDIT ME
+
+\end{appendices}
+%----------------------------------------------------------------------------------------
+
+\end{document}
